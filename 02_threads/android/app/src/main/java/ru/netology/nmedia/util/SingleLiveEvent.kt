@@ -3,10 +3,10 @@ package ru.netology.nmedia.util
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import java.util.concurrent.atomic.AtomicBoolean
 
 class SingleLiveEvent<T> : MutableLiveData<T>() {
-    private val mPending = AtomicBoolean(false)
+    // FIXME: упрощённый вариант, пока не прошли Atomic'и
+    private var pending = false
     
     override fun observe(owner: LifecycleOwner, observer: Observer<in T?>) {
         require (!hasActiveObservers()) {
@@ -14,14 +14,16 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         }
         
         super.observe(owner) {
-            if (mPending.compareAndSet(true, false)) {
+            if (pending) {
+                pending = false
                 observer.onChanged(it)
             }
         }
     }
 
     override fun setValue(t: T?) {
-        mPending.set(true)
+        pending = true
         super.setValue(t)
     }
 }
+

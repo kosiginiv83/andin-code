@@ -57,6 +57,7 @@ dependencies {
     def nav_version = "2.3.1"
     def room_version = "2.2.5"
     def firebase_version = "26.0.0"
+    def okhttp_version = "4.9.0"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -77,9 +78,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     implementation platform("com.google.firebase:firebase-bom:$firebase_version")
     implementation "com.google.firebase:firebase-messaging-ktx"
-    def okhttp_version = "4.9.0"
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
