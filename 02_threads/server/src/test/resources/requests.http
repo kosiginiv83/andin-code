@@ -67,6 +67,53 @@ client.test("Request executed successfully", function() {
 });
 %}
 
+### Like сообщения
+
+POST http://localhost:9999/api/posts/1/likes
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
+### Получение сообщения по id
+
+GET http://localhost:9999/api/posts/1
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json' but received '" + response.contentType.mimeType + "'");
+  client.assert(response.body.id === 1, "id not 1");
+  client.assert(response.body.likes === 1, "likes not incremented");
+});
+%}
+
+
+### Дизлайк сообщения
+
+DELETE http://localhost:9999/api/posts/1/likes
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
+
+### Получение сообщения по id
+
+GET http://localhost:9999/api/posts/1
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status === 200, "Response status is not 200");
+  client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json' but received '" + response.contentType.mimeType + "'");
+  client.assert(response.body.id === 1, "id not 1");
+  client.assert(response.body.likes === 0, "likes decremented");
+});
+%}
+
 ### Удаление сообщения по id
 
 DELETE http://localhost:9999/api/posts/1

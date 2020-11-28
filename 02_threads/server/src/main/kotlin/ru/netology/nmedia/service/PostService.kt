@@ -2,16 +2,16 @@ package ru.netology.nmedia.service
 
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.entity.PostEntity
 import ru.netology.nmedia.exception.NotFoundException
 import ru.netology.nmedia.repository.PostRepository
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
 
 @Service
+@Transactional
 class PostService(private val repository: PostRepository) {
     fun getAll(): List<Post> = repository
             .findAll(Sort.by(Sort.Direction.DESC, "id"))
@@ -35,4 +35,16 @@ class PostService(private val repository: PostRepository) {
             }.toDto()
 
     fun removeById(id: Long): Unit = repository.deleteById(id)
+
+    fun likeById(id: Long) {
+        if (repository.likeById(id) != 1) {
+            throw NotFoundException()
+        }
+    }
+
+    fun unlikeById(id: Long) {
+        if (repository.unlikeById(id) != 1) {
+            throw NotFoundException()
+        }
+    }
 }
