@@ -36,19 +36,7 @@ class PostRepositoryImpl: PostRepository {
     }
 
     override fun likeById(id: Long) {
-        val request: Request = Request.Builder()
-            .url("${BASE_URL}/api/slow/posts/$id")
-            .build()
-
-        val postById = client.newCall(request)
-            .execute()
-            .use { it.body?.string() }
-            .let {
-                gson.fromJson(it, Post::class.java)
-            }
-        if (!postById.likedByMe) {
-            save(postById.copy(likedByMe = true, likes = postById.likes.inc()))
-        }
+        // TODO: do this in homework
     }
 
     override fun save(post: Post) {
