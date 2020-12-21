@@ -16,15 +16,15 @@ class PostSlowController(private val service: PostService) {
     }
 
     @GetMapping("/{id}")
-    fun getAll(@PathVariable id: Long) {
+    fun getById(@PathVariable id: Long): Post {
         Thread.sleep(delay)
-        service.getById(id)
+        return service.getById(id)
     }
 
     @PostMapping
-    fun save(@RequestBody dto: Post) {
+    fun save(@RequestBody dto: Post): Post {
         Thread.sleep(delay)
-        service.save(dto)
+        return service.save(dto)
     }
 
     @DeleteMapping("/{id}")
