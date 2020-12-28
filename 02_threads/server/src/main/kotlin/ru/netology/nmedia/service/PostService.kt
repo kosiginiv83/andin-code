@@ -14,37 +14,41 @@ import java.time.OffsetDateTime
 @Transactional
 class PostService(private val repository: PostRepository) {
     fun getAll(): List<Post> = repository
-            .findAll(Sort.by(Sort.Direction.DESC, "id"))
-            .map { it.toDto() }
+        .findAll(Sort.by(Sort.Direction.DESC, "id"))
+        .map { it.toDto() }
 
     fun getById(id: Long): Post = repository
-            .findById(id)
-            .map { it.toDto() }
-            .orElseThrow(::NotFoundException)
+        .findById(id)
+        .map { it.toDto() }
+        .orElseThrow(::NotFoundException)
 
     fun save(dto: Post): Post = repository
-            .findById(dto.id)
-            .orElse(PostEntity.fromDto(dto.copy(
+        .findById(dto.id)
+        .orElse(
+            PostEntity.fromDto(
+                dto.copy(
                     likes = 0,
                     likedByMe = false,
                     published = LocalDateTime.now().toEpochSecond(OffsetDateTime.now().offset)
-            )))
-            .copy(content = dto.content)
-            .let {
-                repository.save(it)
-            }.toDto()
+                )
+            )
+        )
+        .copy(content = dto.content)
+        .let {
+            repository.save(it)
+        }.toDto()
 
     fun removeById(id: Long): Unit = repository.deleteById(id)
 
-    fun likeById(id: Long) {
-        if (repository.likeById(id) != 1) {
-            throw NotFoundException()
-        }
-    }
+    fun likeById(id: Long): Post = repository
+        .findById(id)
+        .orElseThrow(::NotFoundException)
+        .apply { this.likes = this.likes + 1 }
+        .toDto()
 
-    fun unlikeById(id: Long) {
-        if (repository.unlikeById(id) != 1) {
-            throw NotFoundException()
-        }
-    }
+    fun unlikeById(id: Long): Post = repository
+        .findById(id)
+        .orElseThrow(::NotFoundException)
+        .apply { this.likes = this.likes - 1 }
+        .toDto()
 }
