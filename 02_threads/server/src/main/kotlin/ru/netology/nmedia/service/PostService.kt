@@ -43,12 +43,18 @@ class PostService(private val repository: PostRepository) {
     fun likeById(id: Long): Post = repository
         .findById(id)
         .orElseThrow(::NotFoundException)
-        .apply { this.likes = this.likes + 1 }
+        .apply {
+            likes += 1
+            likedByMe = true
+        }
         .toDto()
 
     fun unlikeById(id: Long): Post = repository
         .findById(id)
         .orElseThrow(::NotFoundException)
-        .apply { this.likes = this.likes - 1 }
+        .apply {
+            likes -= 1
+            likedByMe = false
+        }
         .toDto()
 }

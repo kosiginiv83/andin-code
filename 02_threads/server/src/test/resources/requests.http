@@ -87,6 +87,7 @@ client.test("Request executed successfully", function() {
   client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json' but received '" + response.contentType.mimeType + "'");
   client.assert(response.body.id === 1, "id not 1");
   client.assert(response.body.likes === 1, "likes not incremented");
+  client.assert(response.body.likedByMe === true, "likedByMe didn't changed");
 });
 %}
 
@@ -111,6 +112,7 @@ client.test("Request executed successfully", function() {
   client.assert(response.contentType.mimeType === "application/json", "Expected 'application/json' but received '" + response.contentType.mimeType + "'");
   client.assert(response.body.id === 1, "id not 1");
   client.assert(response.body.likes === 0, "likes decremented");
+  client.assert(response.body.likedByMe === false, "likedByMe didn't changed");
 });
 %}
 
