@@ -16,15 +16,15 @@ class PostSlowController(private val service: PostService) {
     }
 
     @GetMapping("/{id}")
-    fun getAll(@PathVariable id: Long) {
+    fun getAll(@PathVariable id: Long): Post {
         Thread.sleep(delay)
-        service.getById(id)
+        return service.getById(id)
     }
 
     @PostMapping
-    fun save(@RequestBody dto: Post) {
+    fun save(@RequestBody dto: Post): Post {
         Thread.sleep(delay)
-        service.save(dto)
+        return service.save(dto)
     }
 
     @DeleteMapping("/{id}")
@@ -34,14 +34,14 @@ class PostSlowController(private val service: PostService) {
     }
 
     @PostMapping("/{id}/likes")
-    fun likeById(@PathVariable id: Long) {
+    fun likeById(@PathVariable id: Long): Post {
         Thread.sleep(delay)
-        service.likeById(id)
+        return service.likeById(id)
     }
 
     @DeleteMapping("/{id}/likes")
-    fun unlikeById(@PathVariable id: Long) {
+    fun unlikeById(@PathVariable id: Long): Post {
         Thread.sleep(delay)
-        service.unlikeById(id)
+        return service.unlikeById(id)
     }
 }
